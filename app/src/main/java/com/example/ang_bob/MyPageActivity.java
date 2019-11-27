@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,10 +27,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyPageActivity extends AppCompatActivity {
 
-    private ListView myroom_list;
+    private RecyclerView myroom_list;
     private TextView tv_room;
     String username;
     private RoomAdapter roomAdapter;
@@ -38,19 +41,26 @@ public class MyPageActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference("사용자");
     private DatabaseReference chat_databaseReference = firebaseDatabase.getReference("채팅");
-    private ArrayAdapter<String> adapter;
-
+    private List<RoomListItem> roomListItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
-        myroom_list=(ListView)findViewById(R.id.myroom_list);
+        myroom_list=(RecyclerView) findViewById(R.id.myroom_list);
+        roomAdapter=new RoomAdapter(getApplicationContext(), roomListItems, R.layout.room_listview);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        myroom_list.setHasFixedSize(true);
+        myroom_list.setLayoutManager(layoutManager);
+        myroom_list.setAdapter(roomAdapter);
+        roomAdapter.notifyDataSetChanged();
+
         tv_room=(TextView)findViewById(R.id.tv_room);
         mAuth = FirebaseAuth.getInstance();
         userAuth = mAuth.getCurrentUser();
         if (userAuth != null) {
-            databaseReference.addValueEventListener(new ValueEventListener() {
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -67,39 +77,23 @@ public class MyPageActivity extends AppCompatActivity {
                 }
             });
         }
-        /*
-        roomAdapter=new RoomAdapter();
-        adapter=new ArrayAdapter<String>(this, R.layout.room_listview, R.id.tv_title);
-        myroom_list.setAdapter(adapter);
-        chat_databaseReference.addChildEventListener(new ChildEventListener() { //채팅
+
+        chat_databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                for(DataSnapshot ds: dataSnapshot.child("user").getChildren()) {
-                        if (userAuth.getEmail().equals(ds.getValue().toString())){
-                            Integer number=(int)dataSnapshot.child("user").getChildrenCount();
-                            //ArrayList<String> arrayList = new ArrayList<>();
-                            //여긴 다에
-                            roomAdapter.addItem(dataSnapshot.getKey(),number.toString()+"명");
-                            adapter.add(dataSnapshot.getKey() );
-                            Log.d("roomadapter",""+dataSnapshot.getKey().toString()+" "+number.toString());
-                            myroom_list.setAdapter(roomAdapter);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                roomListItems.clear();
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    int number = 0;
+                    for(DataSnapshot ds2 : ds.getChildren()) {
+                        if(ds2.getKey().equals("user")){
+                            number =(int)ds2.getChildrenCount();
+                            RoomListItem a = new RoomListItem(ds.getKey(), number+"명");
+                            roomListItems.add(a);
+                            roomAdapter.notifyDataSetChanged();
                         }
+                    }
                 }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
 
             @Override
@@ -107,21 +101,19 @@ public class MyPageActivity extends AppCompatActivity {
 
             }
         });
-        //showRoomList();
-        myroom_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        roomAdapter.setOnItemClickListener(new RoomAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+            public void onItemClick(View v, final int position ) {
                 final Intent intent = new Intent(MyPageActivity.this, MyRoomActivity.class);
-                intent.putExtra("room_title", adapter.getItem(i));
+                intent.putExtra("room_title", roomListItems.get(position).getRoom_title());
                 startActivity(intent);
             }
-
         });
-
-         */
-    }
-
+    }/*
+    final Intent intent = new Intent(MyPageActivity.this, MyRoomActivity.class);
+                intent.putExtra("room_title", adapter.getItem(i));
+    startActivity(intent);
+    */
 
 }
 

@@ -66,7 +66,6 @@ public class RoomsActivity extends AppCompatActivity {
     // 나는 mina0774구독자에게 메세지 전송이 가능함 그래서 ㅅ서로 쪽지가 주고받을수있음
     // 그럼 구독처리는 로그인 시 해야함
 
-    ArrayList<String> arrayList;
 
     private List<RoomListItem> roomListItems = new ArrayList<>();
 
@@ -110,7 +109,6 @@ public class RoomsActivity extends AppCompatActivity {
                     }
                 }
                 Log.d("number",number+"");
-
             }
 
             @Override

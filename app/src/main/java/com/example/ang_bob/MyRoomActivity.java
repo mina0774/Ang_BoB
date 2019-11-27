@@ -49,6 +49,7 @@ public class MyRoomActivity extends AppCompatActivity {
     private FirebaseUser userAuth;
     private String user_email;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +71,7 @@ public class MyRoomActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot){
                 Integer i=(int)dataSnapshot.child(room_name).child("user").getChildrenCount();
-                number.setText(i.toString()+"명");
+                number.setText("현재인원 : " + i.toString()+"명");
             }
 
             @Override
@@ -87,7 +88,7 @@ public class MyRoomActivity extends AppCompatActivity {
                         if (userAuth.getEmail().equals(ds.child("email").getValue().toString())) {
                             username = ds.child("username").getValue().toString();
                             age = ds.child("age").getValue().toString();
-                            Chat chat = new Chat(room_name, username + "님이 들어오셨습니다.", "");
+                            Chat chat = new Chat(username ,username + "님이 들어오셨습니다.");
                             chat_databaseReference.child(room_name).child("chatting history").push().setValue(chat);
                             chat_databaseReference.child(room_name).child("user").child(username).setValue(userAuth.getEmail());
                         }
@@ -107,7 +108,7 @@ public class MyRoomActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (edit_message.getText().toString().equals(""))
                     return;
-                Chat chat = new Chat(room_name, edit_message.getText().toString(), username);
+                Chat chat = new Chat( username,edit_message.getText().toString());
                 chat_databaseReference.child(room_name).child("chatting history").push().setValue(chat);
                 chat_databaseReference.child(room_name).child("user").child(username).setValue(userAuth.getEmail());
                 edit_message.setText("");
@@ -144,7 +145,12 @@ public class MyRoomActivity extends AppCompatActivity {
 
     private void addMessage(DataSnapshot dataSnapshot, ArrayAdapter<String> adapter) {
         Chat chat = dataSnapshot.getValue(Chat.class);
-        adapter.add(chat.getUsername() + " : " + chat.getMessage());
+        if(chat.getMessage().equals(username + "님이 들어오셨습니다.")){
+            adapter.add(chat.getMessage() + " " + "("+chat.getTime()+")");
+        }
+        else {
+            adapter.add(chat.getUsername() + " : " + chat.getMessage() + " " + "("+chat.getTime()+")");
+        }
     }
 
     private void removeMessage(DataSnapshot dataSnapshot, ArrayAdapter<String> adapter) {
