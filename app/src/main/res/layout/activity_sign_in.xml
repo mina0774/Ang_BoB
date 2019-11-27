@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff"
+    tools:context=".SignInActivity">
+
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="403dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/logo" />
+
+
+    <EditText
+        android:id="@+id/email_in"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_marginTop="0dp"
+        android:layout_centerHorizontal="true"
+        android:hint="user@cau.ac.kr"
+        android:inputType="textEmailAddress"
+        android:textColor="#363636"
+        android:textColorHint="#525252" />
+
+
+    <EditText
+        android:id="@+id/pwd_in"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/email_in"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:textColor="#363636"
+        android:textColorHint="#525252" />
+
+    <Button
+        android:id="@+id/signIn"
+        android:layout_width="300dp"
+        android:layout_height="37dp"
+        android:layout_below="@+id/pwd_in"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/round_rectangle"
+        android:onClick="signIn"
+        android:text="로그인"
+        android:textColor="#ffffff" />
+
+
+    <Button
+        android:id="@+id/tv_findPW"
+        android:layout_width="300dp"
+        android:layout_height="37dp"
+        android:layout_below="@id/signIn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/round_rectangle_white"
+        android:onClick="findPw"
+        android:text="비밀번호 찾기"
+        android:textColor="#707070" />
+
+    <CheckBox
+        android:id="@+id/autoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pwd_in"
+        android:layout_marginEnd="20dp"
+        android:layout_alignParentRight="true"
+        android:text="자동로그인" />
+
+
+</RelativeLayout>
