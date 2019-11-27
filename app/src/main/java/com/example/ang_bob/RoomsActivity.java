@@ -46,7 +46,7 @@ public class RoomsActivity extends AppCompatActivity {
     private DatabaseReference databaseReference = firebaseDatabase.getReference("채팅");
 
     //FCM 구현 변수
-    private String FCM_API = "https://fcm.googleapis.com/fcm/send"; //URL 주소라 생각 ENDPOINT??
+    private String FCM_API = "https://fcm.googleapis.com/fcm/send";
     private String serverKey =
             "key=" +  " AIzaSyA2gi_Un1Y9jjRiB2t5poYVb3jGZwokxKw"; //띄어쓰기해야함
     private String contentType = "application/json";
@@ -58,12 +58,10 @@ public class RoomsActivity extends AppCompatActivity {
     String NOTIFICATION_TITLE;
     String NOTIFICATION_MESSAGE;
     String TOPIC;
-    //필요한것들 정리
-    //현재하는거 주제메세징 시스템임 구독한 사람에게 알림이 가는거
-    // 나 -- 다른사용자 2명이있을떄
-    // 나는 로그인하면 rnjsdnfkacau.ac.kr 이런 이름을 구독함
-    // 너는 로그인하면 mi~~~~~이런 이름을 구독함
-    // 나는 mina0774구독자에게 메세지 전송이 가능함 그래서 ㅅ서로 쪽지가 주고받을수있음
+    //현재하는거 주제메세징 시스템 -  구독한 사람에게 알림
+    // 나 -- 다른사용자 2명이있을 때
+    // 로그인하면 rnjsdnfkacau.ac.kr 이런 이름을 구독함
+    // mina0774 구독자에게 메세지 전송이 가능함 그래서 서로 쪽지 주고받을수있음
     // 그럼 구독처리는 로그인 시 해야함
 
 
@@ -99,7 +97,7 @@ public class RoomsActivity extends AppCompatActivity {
                             ArrayList arrayList = new ArrayList<>();
                             number =(int)ds2.getChildrenCount();
                            for(DataSnapshot ds3: ds2.getChildren()){
-                               arrayList.add(ds3.getValue().toString());//이메일 저장 부분이거든 사용자들
+                               arrayList.add(ds3.getValue().toString());//이메일 저장 부분 / 사용자들
                            }
                             RoomListItem a = new RoomListItem(ds.getKey(), number+"명", arrayList);
                             roomListItems.add(a);
@@ -127,12 +125,8 @@ public class RoomsActivity extends AppCompatActivity {
                         .setPositiveButton("예", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //여기서부터 채팅방 참여
-                                //여기서부터 난이도 ! why? 방 주인이 누군지모름
-                                //방에있는 사람들 리스트가 있나요 ?어디있져
-                                //디비에서 읽어야하는거져
+                                //여기서부터 채팅방
                                 //TOPIC = "/topics/userABC"; //topic has to match what the receiver subscribed to
-
                                 jsonObjectInput(roomListItems.get(fi).getUsers_Email(), fi);
 
                             }
@@ -180,12 +174,12 @@ public class RoomsActivity extends AppCompatActivity {
     }
 
     //알림 전송부분
-    private void sendNotification(JSONObject notification) {  //FCM API키 필요 어디에 있나여
+    private void sendNotification(JSONObject notification) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
 
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response) { //메세지 전송 성공하면 실행됨
+                    public void onResponse(JSONObject response) { 
 
                     }
                 },

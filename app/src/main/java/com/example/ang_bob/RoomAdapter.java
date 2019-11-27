@@ -31,10 +31,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
         void onItemClick(View v, int position);
     }
 
-    // 리스너 객체 참조를 저장하는 변수
     private OnItemClickListener mListener = null ;
 
-    // OnItemClickListener 리스너 객체 참조를 어댑터에 전달하는 메서드
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mListener = listener ;
     }

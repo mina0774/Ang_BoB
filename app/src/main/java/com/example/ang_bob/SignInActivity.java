@@ -164,12 +164,7 @@ public class SignInActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 startActivity(new Intent(getApplicationContext(),StartActivity.class));
                                                 //구독이 잘되었으면 로그인
-                                                //로그아웃 기능없져
-                                                //기기 구독 방식임 앱 고유의 토큰을 사용하는거같은데 잘모름
-                                                //만약에 구독을 2개한다 그럼 1 2이란 거 구독했다 그럼 누군가 1,2로 메세지보내면
-                                                //둘다 받게됨 ㅇㅋ? 그래서 기기 구독은 앱꺼졌을떄해야한느데 이건
-                                                //시간남으면 해볼생각임 ! 잘몰라서 ㅎ
-                                                //구독끝
+                                                //기기 구독 방식임 앱 고유의 토큰을 사용
                                             }
                                         });
 
@@ -206,7 +201,6 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
     private void load() {
-        //자동로그인 체크된 상태로 이 액티비티로 오면 SharedPreference에 저장된 이메일과 비밀번호를 복호한다.
         try {
             email_login.setText(AES.AES_Decode(PreferenceUtil.getInstance(this).getStringExtra("LoginID")));
             pwd_login.setText(AES.AES_Decode(PreferenceUtil.getInstance(this).getStringExtra("LoginPW")));

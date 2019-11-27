@@ -1,20 +1,5 @@
 package com.example.ang_bob;
 
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -38,33 +23,17 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
 
-/**
- * NOTE: There can only be one service in each app that receives FCM messages. If multiple
- * are declared in the Manifest then the first one will be chosen.
- *
- * In order to make this Java sample functional, you must remove the following from the Kotlin messaging
- * service in the AndroidManifest.xml:
- *
- * <intent-filter>
- *   <action android:name="com.google.firebase.MESSAGING_EVENT" />
- * </intent-filter>
- */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
     private final String ADMIN_CHANNEL_ID ="admin_channel";
 
-    // 메시지 수신
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(RemoteMessage remoteMessage) { //메시지를 수신하는 부분
         final Intent intent = new Intent(this, MyRoomActivity.class);
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationID = new Random().nextInt(3000);
 
-      /*
-        Apps targeting SDK 26 or above (Android O) must implement notification channels and add its notifications
-        to at least one of them. Therefore, confirm if version is Oreo or higher, then setup notification channel
-      */
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             setupChannels(notificationManager);
         }
@@ -86,7 +55,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSound(notificationSoundUri)
                 .setContentIntent(pendingIntent);
 
-        //Set notification color to match your app color template
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             notificationBuilder.setColor(getResources().getColor(R.color.colorPrimaryDark));
         }
@@ -95,19 +63,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @SuppressLint("WrongConstant")
     private void sendNotification(String title, String message) {
-        String channelId = "channel";
-        String channelName = "Channel Name";
+        String lId = "channel";
+        String lName = "Channel Name";
 
         NotificationManager notifManager = (NotificationManager) getSystemService  (Context.NOTIFICATION_SERVICE);
 
         //채널 생성
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
+            NotificationChannel mChannel = new NotificationChannel(lId, lName, importance);
             notifManager.createNotificationChannel(mChannel);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, lId);
         Intent notificationIntent = new Intent(this, MyRoomActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         int requestID = (int) System.currentTimeMillis();
@@ -129,17 +97,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setupChannels(NotificationManager notificationManager){
-        CharSequence adminChannelName = "New notification";
+        CharSequence ChannelName = "New notification";
         String adminChannelDescription = "Device to devie notification";
 
-        NotificationChannel adminChannel;
-        adminChannel = new NotificationChannel(ADMIN_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_HIGH);
-        adminChannel.setDescription(adminChannelDescription);
-        adminChannel.enableLights(true);
-        adminChannel.setLightColor(Color.RED);
-        adminChannel.enableVibration(true);
+        NotificationChannel Channel;
+        Channel = new NotificationChannel(ADMIN_CHANNEL_ID, ChannelName, NotificationManager.IMPORTANCE_HIGH);
+        Channel.setDescription(adminChannelDescription);
+        Channel.enableLights(true);
+        Channel.setLightColor(Color.RED);
+        Channel.enableVibration(true);
         if (notificationManager != null) {
-            notificationManager.createNotificationChannel(adminChannel);
+            notificationManager.createNotificationChannel(Channel);
         }
     }
 }
