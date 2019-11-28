@@ -134,12 +134,12 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-    //이메일 인증 메일 정확히 보내기
+    //이메일 인증 메일 요청 기다리기 위함
     @SuppressLint("HandlerLeak")
     Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             if (msg.what == TIME_OUT) { // 타임아웃이 발생하면
-                dialog.dismiss(); // ProgressDialog를 종료
+                dialog.dismiss(); // ProgressDialog를 종료시킴
             }
         }
     };
@@ -164,7 +164,6 @@ public class SignUpActivity extends AppCompatActivity {
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("왜 안돼?",task.isSuccessful()+" ");
                         if (task.isSuccessful()) {
 
                             mFirebaseUser = firebaseAuth.getCurrentUser();

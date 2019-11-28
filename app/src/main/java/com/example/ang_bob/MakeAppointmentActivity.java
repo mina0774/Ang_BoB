@@ -115,7 +115,7 @@ public class MakeAppointmentActivity extends AppCompatActivity {
                     return;
                 }
 
-                Intent intent=new Intent(MakeAppointmentActivity.this,MyRoomActivity.class);
+                Intent intent=new Intent(MakeAppointmentActivity.this, ChatActivity.class);
                 intent.putExtra("date",tv_date.getText().toString());
                 intent.putExtra("time",tv_time.getText().toString());
                 intent.putExtra("shop",et_shop.getText().toString());

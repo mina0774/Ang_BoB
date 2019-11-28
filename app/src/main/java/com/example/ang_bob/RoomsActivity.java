@@ -1,7 +1,6 @@
 package com.example.ang_bob;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,17 +11,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -114,7 +108,7 @@ public class RoomsActivity extends AppCompatActivity {
 
             }
         });
-        //방 입장부분 이기 때문에 상대방에게 알려야함
+        //방 입장 부분에 상대방에게 알림
         roomAdapter.setOnItemClickListener(new RoomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, final int position ) {
@@ -149,6 +143,7 @@ public class RoomsActivity extends AppCompatActivity {
             if(arrayList.get(i).equals(firebaseUser.getEmail()))
                 continue;
             StringTokenizer st = new StringTokenizer(arrayList.get(i), "@");
+            Log.d("dfdfa",arrayList.get(i));
             TOPIC = "/topics/" + st.nextToken()+ st.nextToken();
             NOTIFICATION_TITLE = "알림";
             NOTIFICATION_MESSAGE = firebaseUser.getEmail() + "님이 방을 들어왔어요";
@@ -167,7 +162,7 @@ public class RoomsActivity extends AppCompatActivity {
             sendNotification(notification);
         }
 
-        final Intent intent=new Intent(RoomsActivity.this,MyRoomActivity.class);
+        final Intent intent=new Intent(RoomsActivity.this, ChatActivity.class);
         intent.putExtra("room_title", roomListItems.get(idx).getRoom_title());
         startActivity(intent);
         finish();
@@ -179,7 +174,7 @@ public class RoomsActivity extends AppCompatActivity {
 
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response) { 
+                    public void onResponse(JSONObject response) {
 
                     }
                 },

@@ -1,21 +1,16 @@
 package com.example.ang_bob;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,13 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MyRoomActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity {
     private String room_name = "";
-    private String message = "";
     private String username = "";
-    private String age = "";
-    private int RequestCode;
-    private int ResultCode;
 
     private TextView room_title;
     private EditText edit_message;
@@ -53,7 +44,7 @@ public class MyRoomActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_room);
+        setContentView(R.layout.activity_chat);
         room_title = (TextView) findViewById(R.id.room_title);
         edit_message = (EditText) findViewById(R.id.edit_message);
         btn_send = (Button) findViewById(R.id.btn_send);
@@ -87,7 +78,6 @@ public class MyRoomActivity extends AppCompatActivity {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         if (userAuth.getEmail().equals(ds.child("email").getValue().toString())) {
                             username = ds.child("username").getValue().toString();
-                            age = ds.child("age").getValue().toString();
                             Chat chat = new Chat(username ,username + "님이 들어오셨습니다.");
                             chat_databaseReference.child(room_name).child("chatting history").push().setValue(chat);
                             chat_databaseReference.child(room_name).child("user").child(username).setValue(userAuth.getEmail());
@@ -136,7 +126,7 @@ public class MyRoomActivity extends AppCompatActivity {
                     }
                 });
 
-                Intent intent = new Intent(MyRoomActivity.this,StartActivity.class);
+                Intent intent = new Intent(ChatActivity.this,StartActivity.class);
                 startActivity(intent);
             }
         });

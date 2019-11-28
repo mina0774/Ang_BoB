@@ -14,7 +14,7 @@
         <activity android:name=".MyPageActivity"></activity>
         <activity android:name=".StartActivity" />
         <activity android:name=".RoomsActivity" />
-        <activity android:name=".MyRoomActivity" />
+        <activity android:name=".ChatActivity" />
         <activity android:name=".AES" />
         <activity android:name=".MakeAppointmentActivity" />
         <activity android:name=".MainActivity" />

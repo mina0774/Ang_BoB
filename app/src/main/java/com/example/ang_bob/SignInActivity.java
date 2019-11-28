@@ -47,8 +47,6 @@ public class SignInActivity extends AppCompatActivity {
     ProgressDialog dialog;
     private EditText email_login;
     private EditText pwd_login;
-    private Button signIn_btn;
-    private Button find_pw_btn;
     private String email="";
     private String pwd="";
     private CheckBox autoLogin;
@@ -64,8 +62,6 @@ public class SignInActivity extends AppCompatActivity {
         boolean autologin=PreferenceUtil.getInstance(this).getBooleanExtra("AutoLogin");
         email_login=(EditText) findViewById(R.id.email_in);
         pwd_login=(EditText)findViewById(R.id.pwd_in);
-        find_pw_btn=(Button)findViewById(R.id.tv_findPW);
-        signIn_btn=(Button)findViewById(R.id.signIn);
         autoLogin=(CheckBox)findViewById(R.id.autoLogin);
 
         firebaseAuth=FirebaseAuth.getInstance();

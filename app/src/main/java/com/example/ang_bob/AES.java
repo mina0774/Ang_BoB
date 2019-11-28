@@ -14,10 +14,9 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- *  자동 로그인시 SharedPreference 저장된 아이디와 비밀번호를 암호화하여 저장, 다시 복호화
- *
- *  참고 코드
+/*
+ * 자동 로그인시 SharedPreference 저장된 아이디와 비밀번호를 암호화하여 저장, 다시 복호화
+ * 인터넷 코드를 참고함
  */
 public class AES {
 

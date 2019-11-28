@@ -1,25 +1,18 @@
 package com.example.ang_bob;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -87,10 +80,18 @@ public class MyPageActivity extends AppCompatActivity {
                     int number = 0;
                     for(DataSnapshot ds2 : ds.getChildren()) {
                         if(ds2.getKey().equals("user")){
-                            number =(int)ds2.getChildrenCount();
-                            RoomListItem a = new RoomListItem(ds.getKey(), number+"명");
-                            roomListItems.add(a);
-                            roomAdapter.notifyDataSetChanged();
+                            for(DataSnapshot ds3 :ds2.getChildren()) {
+                                Log.d("ds3",ds3.getValue().toString());
+                                Log.d("useremail",userAuth.getEmail());
+                                if ((ds3.getValue().toString()).equals(userAuth.getEmail().toString())) {
+                                    number = (int) ds2.getChildrenCount();
+                                    Log.d("number",ds2.getChildrenCount()+"");
+                                    Log.d("title",ds.getKey()+"");
+                                    RoomListItem a = new RoomListItem(ds.getKey(), number + "명");
+                                    roomListItems.add(a);
+                                }
+                                roomAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
                 }
@@ -104,16 +105,11 @@ public class MyPageActivity extends AppCompatActivity {
         roomAdapter.setOnItemClickListener(new RoomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, final int position ) {
-                final Intent intent = new Intent(MyPageActivity.this, MyRoomActivity.class);
+                final Intent intent = new Intent(MyPageActivity.this, ChatActivity.class);
                 intent.putExtra("room_title", roomListItems.get(position).getRoom_title());
                 startActivity(intent);
             }
         });
-    }/*
-    final Intent intent = new Intent(MyPageActivity.this, MyRoomActivity.class);
-                intent.putExtra("room_title", adapter.getItem(i));
-    startActivity(intent);
-    */
-
+    }
 }
 
