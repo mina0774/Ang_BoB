@@ -40,6 +40,8 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseUser userAuth;
     private String user_email;
 
+    ArrayAdapter<String> adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +130,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(ChatActivity.this,StartActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -135,11 +138,15 @@ public class ChatActivity extends AppCompatActivity {
 
     private void addMessage(DataSnapshot dataSnapshot, ArrayAdapter<String> adapter) {
         Chat chat = dataSnapshot.getValue(Chat.class);
-        if(chat.getMessage().equals(username + "님이 들어오셨습니다.")){
+        if(chat.getMessage().contains("님이 들어오셨습니다.")){
             adapter.add(chat.getMessage() + " " + "("+chat.getTime()+")");
+            adapter.notifyDataSetChanged();
+            list_message.setSelection(adapter.getCount());
         }
         else {
             adapter.add(chat.getUsername() + " : " + chat.getMessage() + " " + "("+chat.getTime()+")");
+            adapter.notifyDataSetChanged();
+            list_message.setSelection(adapter.getCount());
         }
     }
 
@@ -149,15 +156,14 @@ public class ChatActivity extends AppCompatActivity {
     }
     private void openChat(String chatName) {
         // 리스트 어댑터 생성 및 세팅
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
         list_message.setAdapter(adapter);
 
-        // 데이터 받아오기 및 어댑터 데이터 추가 및 삭제 등..리스너 관리
+        // 데이터 받아오기 및 어댑터 데이터 추가 및 삭제
         chat_databaseReference.child(chatName).child("chatting history").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 addMessage(dataSnapshot, adapter);
-                Log.e("LOG", "s:" + s);
             }
 
             @Override
@@ -178,5 +184,6 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+
     }
 }

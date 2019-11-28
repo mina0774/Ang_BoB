@@ -4,7 +4,6 @@ public class User {
 
     public String email = "";
     public String username = "";
-    public String gender = "";
     public String age = "";
 
 
@@ -13,10 +12,9 @@ public class User {
     }
 
 
-    public User(String email, String username, String gender, String age) {
+    public User(String email, String username, String age) {
         this.email = email;
         this.username = username;
-        this.gender = gender;
         this.age = age;
     }
 

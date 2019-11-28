@@ -143,7 +143,6 @@ public class RoomsActivity extends AppCompatActivity {
             if(arrayList.get(i).equals(firebaseUser.getEmail()))
                 continue;
             StringTokenizer st = new StringTokenizer(arrayList.get(i), "@");
-            Log.d("dfdfa",arrayList.get(i));
             TOPIC = "/topics/" + st.nextToken()+ st.nextToken();
             NOTIFICATION_TITLE = "알림";
             NOTIFICATION_MESSAGE = firebaseUser.getEmail() + "님이 방을 들어왔어요";

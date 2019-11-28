@@ -75,7 +75,6 @@ public class MyPageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 roomListItems.clear();
-
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     int number = 0;
                     for(DataSnapshot ds2 : ds.getChildren()) {

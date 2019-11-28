@@ -45,12 +45,10 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText email_e,pwd_e,check_pwd,name_e,age_e;
     private TextView check_show;
     private Button signup_btn;
-    private CheckBox male_box,female_box;
     long count=0;
     private String email="";
     private String pwd="";
     private String name="";
-    private String gender="";
     private String age="";
 
     public static int TIME_OUT = 1001;
@@ -71,8 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
         age_e=(EditText)findViewById(R.id.age);
         check_show=(TextView)findViewById(R.id.checkText);
         signup_btn=(Button)findViewById(R.id.sign_up);
-        male_box=(CheckBox)findViewById(R.id.male);
-        female_box=(CheckBox)findViewById(R.id.female);
+
         //비밀번호 일치하는지 확인, 일치 시에 회원가입 가능
         check_pwd.addTextChangedListener(new TextWatcher() {
             @Override
@@ -109,30 +106,10 @@ public class SignUpActivity extends AppCompatActivity {
                 check_pwd.setText(null);
                 name_e.setText(null);
                 age_e.setText(null);
-                male_box.setChecked(false);
-                female_box.setChecked(false);
             }
         });
 
-        //여성일 때,
-        female_box.setOnClickListener(new CheckBox.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gender="여자";
-                male_box.setChecked(false);
-                female_box.setChecked(true);
-            }
-        });
 
-        //남성일 때,
-        male_box.setOnClickListener(new CheckBox.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gender="남자";
-                female_box.setChecked(false);
-                male_box.setChecked(true);
-            }
-        });
     }
     //이메일 인증 메일 요청 기다리기 위함
     @SuppressLint("HandlerLeak")
@@ -184,7 +161,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                         count++;
                                                     }
 
-                                                    User user = new User(email, name, gender, age);
+                                                    User user = new User(email, name, age);
                                                     StringTokenizer stringTokenizer = new StringTokenizer(email, "@");
                                                     if (count >= 9) {
                                                         myRef.child("user0" + (count + 1) + ":" + stringTokenizer.nextToken()).setValue(user);

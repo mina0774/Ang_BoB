@@ -41,7 +41,6 @@ import javax.crypto.NoSuchPaddingException;
 
 public class SignInActivity extends AppCompatActivity {
 
-    public static int TIME_OUT = 1001;
     private static final Pattern PWD_RULE = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{4,16}$");
     private static final Pattern EMAIL_RULE=Pattern.compile("^[a-zA-Z0-9]+@cau.ac.kr+$");
     ProgressDialog dialog;
@@ -73,18 +72,6 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-
-    @SuppressLint("HandlerLeak")
-    Handler mHandler = new Handler()
-    {
-        public void handleMessage(Message msg)
-        {
-            if (msg.what == TIME_OUT)
-            {
-                dialog.dismiss(); // 타임 아웃 발생 시에, ProgressDialog 종료
-            }
-        }
-    };
 
     public void findPw(View view){
         Intent intent = new Intent(SignInActivity.this, FindPW_Activity.class);
@@ -123,7 +110,6 @@ public class SignInActivity extends AppCompatActivity {
                                 pwd_login.setText(null);
 
                                 dialog=ProgressDialog.show(SignInActivity.this,"로그인 중 입니다.","잠시만 기다려주세요.");
-                                mHandler.sendEmptyMessageDelayed(TIME_OUT,2000);
                                 if(autoLogin.isChecked()){
                                     PreferenceUtil.getInstance(getApplicationContext()).putBooleanExtra("AutoLogin", true);
                                     try {
@@ -159,6 +145,9 @@ public class SignInActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 startActivity(new Intent(getApplicationContext(),StartActivity.class));
+                                                dialog.dismiss();
+                                                finish();
+                                              //  finish();
                                                 //구독이 잘되었으면 로그인
                                                 //기기 구독 방식임 앱 고유의 토큰을 사용
                                             }
