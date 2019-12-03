@@ -39,7 +39,6 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser userAuth;
     private String user_email;
-
     ArrayAdapter<String> adapter;
 
 

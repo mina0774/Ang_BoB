@@ -48,7 +48,7 @@ public class SearchAdapter extends BaseAdapter {
         }else{
             viewHolder = (ViewHolder)convertView.getTag();
         }
-        // 리스트에 있는 음식점 목록을 리스트뷰에 보이도록한다.
+        // 리스트에 있는 음식점 목록을 리스트뷰에 보이도록 함
         viewHolder.shop.setText(shop_list.get(position));
 
         return convertView;

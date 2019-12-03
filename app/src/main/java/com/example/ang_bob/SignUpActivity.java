@@ -40,6 +40,12 @@ import static android.net.sip.SipErrorCode.TIME_OUT;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    FirebaseAuth firebaseAuth;
+    FirebaseUser mFirebaseUser;
+    private FirebaseDatabase database=FirebaseDatabase.getInstance();
+    private DatabaseReference myRef=database.getReference("사용자");
+
+
     private static final Pattern PWD_RULE=Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{6,16}$");
     private static final Pattern EMAIL_RULE=Pattern.compile("^[a-zA-Z0-9]+@cau.ac.kr+$");
     private EditText email_e,pwd_e,check_pwd,name_e,age_e;
@@ -50,14 +56,9 @@ public class SignUpActivity extends AppCompatActivity {
     private String pwd="";
     private String name="";
     private String age="";
+    public static int TM_OUT = 1001;
 
-    public static int TIME_OUT = 1001;
     ProgressDialog dialog;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser mFirebaseUser;
-    private FirebaseDatabase database=FirebaseDatabase.getInstance();
-    private DatabaseReference myRef=database.getReference("사용자");
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,15 +112,17 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     }
+
     //이메일 인증 메일 요청 기다리기 위함
     @SuppressLint("HandlerLeak")
     Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
-            if (msg.what == TIME_OUT) { // 타임아웃이 발생하면
-                dialog.dismiss(); // ProgressDialog를 종료시킴
+            if (msg.what == TM_OUT) {
+                dialog.dismiss();
             }
         }
     };
+
     //이메일 유효성 검사 @cau.ac.kr 형식만 허용
     private boolean isValidEmail() {
         if(email.isEmpty()){
@@ -129,11 +132,26 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    //비밀번호 유효성 검사
+    //비밀번호 유효성 검사 (특수문자, 숫자)
     private boolean isValidPwd(){
         if(pwd.isEmpty()){
             return false;
         }else return PWD_RULE.matcher(pwd).matches();
+    }
+
+    public void registerUser(){
+        email=email_e.getText().toString();
+        pwd=pwd_e.getText().toString();
+        name=name_e.getText().toString();
+        age=age_e.getText().toString();
+        if(isValidEmail()==false){
+            Toast.makeText(SignUpActivity.this,"중앙대학교 이메일을 입력해주세요",Toast.LENGTH_SHORT).show();
+        }
+        if(isValidEmail() && isValidPwd()){
+            firebaseAuth=FirebaseAuth.getInstance();
+            firebaseAuth.useAppLanguage();
+            signupUser(email,pwd);
+        }
     }
 
     //회원 가입, firebase 이메일 인증 방식
@@ -151,7 +169,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(SignUpActivity.this, "인증 메일 전송:" + mFirebaseUser.getEmail(), Toast.LENGTH_SHORT).show();
                                             dialog = ProgressDialog.show(SignUpActivity.this, "회원가입이 완료되었습니다.", mFirebaseUser.getEmail() + "으로 인증메일이 전송되었습니다.", true);
-                                            mHandler.sendEmptyMessageDelayed(TIME_OUT, 2000);
+                                            mHandler.sendEmptyMessageDelayed(TM_OUT, 2000);
 
                                             //데이터베이스에 유저를 등록
                                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -189,21 +207,6 @@ public class SignUpActivity extends AppCompatActivity {
                     }
 
         });
-    }
-
-    public void registerUser(){
-        email=email_e.getText().toString();
-        pwd=pwd_e.getText().toString();
-        name=name_e.getText().toString();
-        age=age_e.getText().toString();
-        if(isValidEmail()==false){
-            Toast.makeText(SignUpActivity.this,"중앙대학교 이메일을 입력해주세요",Toast.LENGTH_SHORT).show();
-        }
-        if(isValidEmail() && isValidPwd()){
-            firebaseAuth=FirebaseAuth.getInstance();
-            firebaseAuth.useAppLanguage();
-            signupUser(email,pwd);
-        }
     }
 
 }

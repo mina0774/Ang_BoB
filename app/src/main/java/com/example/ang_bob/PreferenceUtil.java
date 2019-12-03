@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 /*
  *  SharedPreferencse - 어플내에 파일 형태로 데이터를 저장하고 어플 삭제 전까지 보존
  *  SharedPreferences 를 쉽게 사용하기 위한 클래스
- *  인터넷 코드를 참고함
+ *  인터넷 코드를 가져옴
  */
 public class PreferenceUtil {
 

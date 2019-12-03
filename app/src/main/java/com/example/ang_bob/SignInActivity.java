@@ -59,12 +59,11 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         boolean autologin=PreferenceUtil.getInstance(this).getBooleanExtra("AutoLogin");
-        email_login=(EditText) findViewById(R.id.email_in);
         pwd_login=(EditText)findViewById(R.id.pwd_in);
+        email_login=(EditText) findViewById(R.id.email_in);
         autoLogin=(CheckBox)findViewById(R.id.autoLogin);
 
         firebaseAuth=FirebaseAuth.getInstance();
-
         autoLogin.setChecked(autologin);
 
         if(autologin){
@@ -73,10 +72,6 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    public void findPw(View view){
-        Intent intent = new Intent(SignInActivity.this, FindPW_Activity.class);
-        startActivity(intent);
-    }
 
     public void signIn(View view){
         if(mFirebaseUser!=null)
@@ -147,7 +142,6 @@ public class SignInActivity extends AppCompatActivity {
                                                 startActivity(new Intent(getApplicationContext(),StartActivity.class));
                                                 dialog.dismiss();
                                                 finish();
-                                              //  finish();
                                                 //구독이 잘되었으면 로그인
                                                 //기기 구독 방식임 앱 고유의 토큰을 사용
                                             }
@@ -185,6 +179,11 @@ public class SignInActivity extends AppCompatActivity {
             return true;
         }
     }
+    public void findPw(View view){
+        Intent intent = new Intent(SignInActivity.this, FindPW_Activity.class);
+        startActivity(intent);
+    }
+
     private void load() {
         try {
             email_login.setText(AES.AES_Decode(PreferenceUtil.getInstance(this).getStringExtra("LoginID")));

@@ -120,7 +120,6 @@ public class RoomsActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //여기서부터 채팅방
-                                //TOPIC = "/topics/userABC"; //topic has to match what the receiver subscribed to
                                 jsonObjectInput(roomListItems.get(fi).getUsers_Email(), fi);
 
                             }

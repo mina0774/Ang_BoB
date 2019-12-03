@@ -16,8 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 /*
  * 자동 로그인시 SharedPreference 저장된 아이디와 비밀번호를 암호화하여 저장, 다시 복호화
- * 인터넷 코드를 참고함
- */
+ * 인터넷 코드 가져옴 */
 public class AES {
 
     public static byte[] ivBytes = { 0x03, 0x0D, 0x3E, 0x0A, 0x5C, 0x10, 0x62, 0x07, 0x40, 0x30, 0x2A, 0x0B, 0x04, 0x01, 0x02, 0x05 };
